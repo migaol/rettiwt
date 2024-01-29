@@ -1,6 +1,6 @@
 import os
 from rettiwt import app, db, bcrypt
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, abort, request
 from flask_login import current_user, login_user, logout_user, login_required
 from rettiwt.forms import *
 from rettiwt.models import User, Post
@@ -9,7 +9,8 @@ from rettiwt.utils import *
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    posts = Post.query.order_by(Post.date.desc())
+    return render_template('home.html', posts=posts)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -71,3 +72,30 @@ def profile():
         form.email.data = current_user.email
     profile_picture_file = url_for('static', filename=f'pfps/{current_user.profile_picture_file}')
     return render_template('profile.html', title='Profile', image_file=profile_picture_file, form=form)
+
+@app.route('/newpost', methods=['GET', 'POST'])
+@login_required
+def newpost():
+    form = FormPost()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash("Post created", 'success')
+        return redirect(url_for('home'))
+    return render_template('newpost.html', title='New Post', form=form, legend='New Post')
+
+@app.route('/post/<int:post_id>')
+def post(post_id: int):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=post.title, post=post)
+
+@app.route('/post/<int:post_id>/delete', methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user: abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash("Post successfully deleted", 'success')
+    return redirect(url_for('home'))

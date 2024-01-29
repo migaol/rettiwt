@@ -1,6 +1,6 @@
 {% extends "baselayout.html" %}
 {% block content %}
-  <div class="content-section">
+  <div>
     <div class="media">
       <img class="rounded-circle profile-picture my-2 mx-2" src="{{ image_file }}">
       <div class="media-body">
@@ -8,7 +8,7 @@
         <p>{{ current_user.email }}</p>
       </div>
     </div>
-    <div class="content-section">
+    <div>
       <form method="POST" action="" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from rettiwt.forms_validators import ValidChars, UniqueUsername, UniqueEmail
 
@@ -21,4 +21,14 @@ class FormChangeCredentials(FlaskForm):
                                 validators=[DataRequired(), Length(min=3, max=16), ValidChars(), UniqueUsername()])
     email = StringField('Email', validators=[DataRequired(), Email(), UniqueEmail()])
     pfp = FileField('Change Profile Picture', validators=[FileAllowed(['jpg', 'png', 'svg'])])
-    submit = SubmitField('Update')
+    submit = SubmitField('Save Changes')
+
+class FormPost(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Post')
+
+class FormEditPost(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Save Changes')

@@ -17,3 +17,8 @@ body {
   height: 128px;
   width: 128px;
 }
+
+.profile-picture-small {
+  height: 64px;
+  width: 64px;
+}

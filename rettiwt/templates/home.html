@@ -1,4 +1,29 @@
 {% extends "baselayout.html" %}
 {% block content %}
   <h1>Home</h1>
+  {% for post in posts %}
+    <article class="media border rounded p-4">
+      <img class="rounded-circle profile-picture-small mr-2" src="{{ url_for('static', filename='pfps/'+post.author.profile_picture_file) }}">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="#">{{ post.author.username }}</a>
+          <small class="text-muted" data-utc-time="{{ post.date.strftime('%Y-%m-%dT%H:%MZ') }}">{{ post.date.strftime('%Y-%m-%d %H:%M') }}</small>
+        </div>
+        <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+        <p class="article-content">{{ post.content }}</p>
+      </div>
+    </article>
+  {% endfor %}
+
+  <script> // convert to local timezone
+    document.addEventListener('DOMContentLoaded', function() {
+      var elements = document.querySelectorAll('[data-utc-time]');
+      elements.forEach(function(element) {
+        var utcTime = element.getAttribute('data-utc-time');
+        var localTime = new Date(utcTime);
+        element.textContent = localTime.toLocaleDateString() + ', ' +
+                              localTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      });
+    });
+  </script>
 {% endblock content %}
