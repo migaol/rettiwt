@@ -1,4 +1,5 @@
-from rettiwt import app, db, bcrypt
+from rettiwt import db, bcrypt
+from rettiwt.settings import PFP_DEFAULT
 from flask_login import UserMixin
 from datetime import datetime
 
@@ -7,7 +8,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(16), unique=True, nullable=False)
     email = db.Column(db.String(69), unique=True, nullable=False)
     password = db.Column(db.String(69), nullable=False)
-    profile_picture_file = db.Column(db.String(69), nullable=False, default='default_pfp.jpg')
+    profile_picture_file = db.Column(db.String(69), nullable=False, default=PFP_DEFAULT)
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def hash_password(password: str) -> str:

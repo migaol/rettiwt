@@ -1,0 +1,2 @@
+PFP_DEFAULT = 'yilongma.jpg'
+PFP_DIMENSIONS = (128, 128)

@@ -12,3 +12,8 @@ body {
 .navbar-brand, .nav-item.nav-link {
     color: white !important;
 }
+
+.profile-picture {
+  height: 128px;
+  width: 128px;
+}

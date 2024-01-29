@@ -1,6 +1,20 @@
-from rettiwt import login_manager
-from rettiwt.models import User, Post
+import os, secrets
+from PIL import Image
+from rettiwt import app, login_manager
+from rettiwt.models import User
+from rettiwt.settings import PFP_DEFAULT, PFP_DIMENSIONS
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+def save_picture(form_picture: str) -> str:
+    random_hex = secrets.token_hex(8)
+    f_name, f_ext = os.path.splitext(form_picture.filename)
+    pfp_fname = random_hex + f_ext
+    pfp_path = os.path.join(app.root_path, 'static/pfps', pfp_fname)
+    
+    i = Image.open(form_picture)
+    i.thumbnail(PFP_DIMENSIONS)
+    i.save(pfp_path)
+    return pfp_fname

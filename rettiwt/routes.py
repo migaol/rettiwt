@@ -1,3 +1,4 @@
+import os
 from rettiwt import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
@@ -46,5 +47,27 @@ def login():
 @app.route('/logout')
 def logout():
     logout_user()
-    flash("Successfully logged out out", 'success')
+    flash("Successfully logged out", 'success')
     return redirect(url_for('home'))
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = FormChangeCredentials()
+    if form.validate_on_submit():
+        if current_user.profile_picture_file != PFP_DEFAULT: # delete old pfp from system
+            old_picture_path = os.path.join(app.root_path, 'static/pfps', current_user.profile_picture_file)
+            if os.path.exists(old_picture_path): os.remove(old_picture_path)
+            picture_file = save_picture(form.pfp.data)
+            current_user.profile_picture_file = picture_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        # TODO: password confirm
+        db.session.commit()
+        flash("Account details updated", 'success')
+        return redirect(url_for('profile'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    profile_picture_file = url_for('static', filename=f'pfps/{current_user.profile_picture_file}')
+    return render_template('profile.html', title='Profile', image_file=profile_picture_file, form=form)
