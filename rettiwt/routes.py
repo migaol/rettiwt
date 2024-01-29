@@ -1,4 +1,4 @@
-import os
+import os, sys
 from rettiwt import app, db, bcrypt
 from flask import render_template, redirect, url_for, flash, abort, request
 from flask_login import current_user, login_user, logout_user, login_required
@@ -56,9 +56,10 @@ def logout():
 def profile():
     form = FormChangeCredentials()
     if form.validate_on_submit():
-        if current_user.profile_picture_file != PFP_DEFAULT: # delete old pfp from system
-            old_picture_path = os.path.join(app.root_path, 'static/pfps', current_user.profile_picture_file)
-            if os.path.exists(old_picture_path): os.remove(old_picture_path)
+        if form.pfp.data:
+            if current_user.profile_picture_file != PFP_DEFAULT: # delete old pfp from system
+                old_picture_path = os.path.join(app.root_path, 'static/pfps', current_user.profile_picture_file)
+                if os.path.exists(old_picture_path): os.remove(old_picture_path)
             picture_file = save_picture(form.pfp.data)
             current_user.profile_picture_file = picture_file
         current_user.username = form.username.data

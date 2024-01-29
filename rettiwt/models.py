@@ -8,8 +8,11 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(16), unique=True, nullable=False)
     email = db.Column(db.String(69), unique=True, nullable=False)
     password = db.Column(db.String(69), nullable=False)
-    profile_picture_file = db.Column(db.String(69), nullable=False, default=PFP_DEFAULT)
+    profile_picture_file = db.Column(db.String(20), nullable=False, default=PFP_DEFAULT)
     posts = db.relationship('Post', backref='author', lazy=True)
+
+    def __repr__(self):
+        return f"User('{self.username}'), '{self.email}', '{self.profile_picture_file}')"
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
