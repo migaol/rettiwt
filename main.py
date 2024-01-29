@@ -1,7 +1,4 @@
-from rettiwt import create_app
-from rettiwt.config import Config, ConfigDebug
-
-app = create_app(Config)
+from rettiwt import app
 
 if __name__ == '__main__':
     app.run()

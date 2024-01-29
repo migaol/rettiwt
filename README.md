@@ -1,4 +1,4 @@
-# Rettiwt/Y: a Twitter/X copy
+# Rettiwt/Y: a Twitter/X-esque internet forum app
 
 ## Features:
 
