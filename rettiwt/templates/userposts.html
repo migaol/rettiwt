@@ -15,7 +15,7 @@
           <small class="text-muted" data-utc-time="{{ post.date.strftime('%Y-%m-%dT%H:%MZ') }}">{{ post.date.strftime('%Y-%m-%d %H:%M') }}</small>
         </div>
         <h2><a class="text-light" href="{{ url_for('postpage', post_id=post.id) }}">{{ post.title }}</a></h2>
-        <p>{{ post.content }}</p>
+        <p class="post-content">{{ post.content }}</p>
       </div>
     </article>
   {% endfor %}
