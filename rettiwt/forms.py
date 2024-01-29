@@ -5,8 +5,8 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from rettiwt.forms_validators import ValidChars, UniqueUsername, UniqueEmail
 
 class FormRegister(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=3, max=16), ValidChars()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[DataRequired(), Length(min=3, max=16), ValidChars(), UniqueUsername()])
+    email = StringField('Email', validators=[DataRequired(), Email(), UniqueEmail()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
     password_confirm = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')

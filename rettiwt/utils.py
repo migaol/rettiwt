@@ -1,6 +1,6 @@
 import os, secrets
 from PIL import Image
-from rettiwt import app, login_manager
+from rettiwt import app, login_manager, bcrypt
 from rettiwt.models import User
 from rettiwt.settings import PFP_DEFAULT, PFP_DIMENSIONS
 
@@ -18,3 +18,7 @@ def save_picture(form_picture: str) -> str:
     i.thumbnail(PFP_DIMENSIONS)
     i.save(pfp_path)
     return pfp_fname
+
+def hash_password(password: str) -> str:
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    return hashed_password

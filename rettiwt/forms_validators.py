@@ -19,7 +19,7 @@ class UniqueUsername:
         self.message = message
 
     def __call__(self, form: FlaskForm, field: StringField):
-        if field.data == current_user.username: return
+        if current_user.is_authenticated and field.data == current_user.username: return
         user = User.query.filter_by(username=field.data).first()
         if user:
             message = self.message or f"Username is taken"
@@ -30,7 +30,7 @@ class UniqueEmail:
         self.message = message
     
     def __call__(self, form: FlaskForm, field: StringField):
-        if field.data == current_user.email: return
+        if current_user.is_authenticated and field.data == current_user.email: return
         user = User.query.filter_by(email=field.data).first()
         if user:
             message = self.message or f"Email is already in use"
