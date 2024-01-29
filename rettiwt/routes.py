@@ -9,7 +9,7 @@ from rettiwt.utils import *
 @app.route('/')
 @app.route('/home')
 def home():
-    posts = Post.query.order_by(Post.date.desc())
+    posts = Post.query.order_by(Post.date.desc()).all()
     return render_template('home.html', posts=posts)
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -104,5 +104,5 @@ def postpage(post_id: int):
 def userposts(username):
     user = User.query.filter_by(username=username).first_or_404()
     posts = Post.query.filter_by(author=user)\
-        .order_by(Post.date.desc())
+        .order_by(Post.date.desc()).all()
     return render_template('userposts.html', posts=posts, user=user)
