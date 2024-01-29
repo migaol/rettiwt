@@ -42,3 +42,9 @@ def login():
         else:
             flash("Login failed: check your credentials", 'danger')
     return render_template('login.html', title='Login', form=form)
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    flash("Successfully logged out out", 'success')
+    return redirect(url_for('home'))
