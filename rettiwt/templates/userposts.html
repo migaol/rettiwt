@@ -1,6 +1,6 @@
 {% extends "baselayout.html" %}
 {% block content %}
-  <h1>Home</h1>
+<h1>Posts authored by {{ user.username }}</h1>
   {% for post in posts %}
     <article class="media border rounded p-4">
       <img class="rounded-circle profile-picture-small mr-2" src="{{ url_for('static', filename='pfps/'+post.author.profile_picture_file) }}">

@@ -85,17 +85,24 @@ def newpost():
         return redirect(url_for('home'))
     return render_template('newpost.html', title='New Post', form=form, legend='New Post')
 
-@app.route('/post/<int:post_id>')
-def post(post_id: int):
-    post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title=post.title, post=post)
-
 @app.route('/post/<int:post_id>/delete', methods=['POST'])
 @login_required
-def delete_post(post_id):
+def delpost(post_id):
     post = Post.query.get_or_404(post_id)
     if post.author != current_user: abort(403)
     db.session.delete(post)
     db.session.commit()
     flash("Post successfully deleted", 'success')
     return redirect(url_for('home'))
+
+@app.route('/post/<int:post_id>')
+def postpage(post_id: int):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=post.title, post=post)
+
+@app.route('/posts/<string:username>')
+def userposts(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user)\
+        .order_by(Post.date.desc())
+    return render_template('userposts.html', posts=posts, user=user)
