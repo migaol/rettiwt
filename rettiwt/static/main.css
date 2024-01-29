@@ -8,3 +8,7 @@ body {
   height: 50px;
   width: 50px;
 }
+
+.navbar-brand, .nav-item.nav-link {
+    color: white !important;
+}
