@@ -20,7 +20,7 @@ Made with Python Flask and Bootstrap CSS
 - ~4 hours excluding breaks
 
 ## Demo:
-link
+[link](https://youtu.be/yiBi2220BZo)
 
 ## How to run:
 - download the source code
